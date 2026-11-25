@@ -1,10 +1,16 @@
 """
 crawler_pipeline.uploader
-Cloud synchronization (Hugging Face Datasets) and automated Quality Assurance (QA).
+Hugging Face Dataset storage helpers for raw EPL seasons and WhoScored match archives.
 """
 
-from .hf_uploader import sync_to_huggingface
-from .qa_validator import run_qa_suite
+from .hf_uploader import (
+    list_hf_whoscored_match_ids,
+    sync_to_huggingface,
+    sync_whoscored_to_hf,
+)
 
-__all__ = ["sync_to_huggingface", "run_qa_suite"]
-
+__all__ = [
+    "list_hf_whoscored_match_ids",
+    "sync_to_huggingface",
+    "sync_whoscored_to_hf",
+]

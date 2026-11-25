@@ -1,10 +1,11 @@
 @echo off
+chcp 65001 >nul
 title Daily EPL Raw Crawler
-echo ======================================================================
-echo   Running Daily Premier League Raw Crawl Pipeline (2026/27)
-echo ======================================================================
-python crawler_pipeline\daily_raw_crawler.py
+setlocal
+cd /d "%~dp0"
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0crawl_daily.ps1" %*
+set "RC=%ERRORLEVEL%"
 echo.
-echo Daily raw crawl finished.
+echo Finished with exit code %RC%.
 pause
-
+exit /b %RC%
