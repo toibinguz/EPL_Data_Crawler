@@ -1,0 +1,47 @@
+club_id,name_standard,fd_name,fbref_name,understat_name,tm_club_id,tm_name,fotmob_team_id,fotmob_names,fpl_short_name,fpl_names,stadium_file,weather_region
+ARS,Arsenal,Arsenal,Arsenal,Arsenal,11.0,Arsenal FC,9825.0,Arsenal,ARS,Arsenal,Emirates_Stadium.json,London
+AVL,Aston Villa,Aston Villa,Aston Villa,Aston Villa,405.0,Aston Villa,10252.0,Aston Villa,AVL,Aston Villa,Villa_Park.json,Birmingham
+BHA,Brighton,Brighton,Brighton & Hove Albion,Brighton,1237.0,Brighton & Hove Albion,10204.0,Brighton & Hove Albion,BHA,Brighton,AMEX_Stadium.json,Southampton_South
+BIR,Birmingham,Birmingham,,,,Birmingham City,8658.0,Birmingham City,,,,Birmingham
+BLB,Blackburn,Blackburn,,,,Blackburn Rovers,8655.0,Blackburn|Blackburn Rovers,,,,Manchester
+BLP,Blackpool,Blackpool,,,,Blackpool FC,8483.0,Blackpool,,,,Manchester
+BOL,Bolton,Bolton,,,,Bolton Wanderers,8559.0,Bolton Wanderers,,,,Manchester
+BOU,Bournemouth,Bournemouth,Bournemouth,Bournemouth,989.0,AFC Bournemouth,8678.0,AFC Bournemouth,BOU,Bournemouth,Vitality_Stadium.json,Southampton_South
+BRA,Bradford,Bradford,,,,Bradford City,,,,,,Leeds_Yorkshire
+BRE,Brentford,Brentford,Brentford,Brentford,1148.0,Brentford FC,9937.0,Brentford,BRE,Brentford,Gtech_Community_Stadium.json,London
+BUR,Burnley,Burnley,Burnley,Burnley,1132.0,Burnley FC,8191.0,Burnley,BUR,Burnley,Turf_Moor.json,Manchester
+CAR,Cardiff,Cardiff,Cardiff City,Cardiff,603.0,Cardiff City,8344.0,Cardiff City,,Cardiff,,Wales_Swansea_Cardiff
+CHA,Charlton,Charlton,,,,Charlton Athletic,,,,,,London
+CHE,Chelsea,Chelsea,Chelsea,Chelsea,631.0,Chelsea FC,8455.0,Chelsea,CHE,Chelsea,Stamford_Bridge.json,London
+COV,Coventry,Coventry,,Coventry,,,8669.0,Coventry City,,,,Birmingham
+CRY,Crystal Palace,Crystal Palace,Crystal Palace,Crystal Palace,873.0,Crystal Palace,9826.0,Crystal Palace,CRY,Crystal Palace,Selhurst_Park.json,London
+DER,Derby,Derby,,,,Derby County,,,,,,Leicester_Midlands
+EVE,Everton,Everton,Everton,Everton,29.0,Everton FC,8668.0,Everton,EVE,Everton,Goodison_Park.json,Liverpool
+FUL,Fulham,Fulham,Fulham,Fulham,931.0,Fulham FC,9879.0,Fulham,FUL,Fulham,Craven_Cottage.json,London
+HUD,Huddersfield,Huddersfield,Huddersfield Town,Huddersfield,1110.0,Huddersfield Town,9796.0,Huddersfield Town,,Huddersfield,,Leeds_Yorkshire
+HUL,Hull,Hull,,Hull,3008.0,Hull City,8667.0,Hull|Hull City,,Hull,,Leeds_Yorkshire
+IPS,Ipswich,Ipswich,Ipswich Town,Ipswich,677.0,Ipswich Town,9902.0,Ipswich Town,IPS,Ipswich,Portman_Road.json,London
+LEE,Leeds,Leeds,Leeds United,Leeds,399.0,Leeds United,8463.0,Leeds United,LEE,Leeds,Elland_Road.json,Leeds_Yorkshire
+LEI,Leicester,Leicester,Leicester City,Leicester,1003.0,Leicester City,8197.0,Leicester City,LEI,Leicester,King_Power_Stadium.json,Leicester_Midlands
+LIV,Liverpool,Liverpool,Liverpool,Liverpool,31.0,Liverpool FC,8650.0,Liverpool,LIV,Liverpool,Anfield.json,Liverpool
+LUT,Luton,Luton,Luton Town,Luton,1031.0,Luton Town,8346.0,Luton Town,LUT,Luton,Kenilworth_Road.json,London
+MCI,Manchester City,Man City,Manchester City,Manchester City,281.0,Manchester City,8456.0,Manchester City,MCI,Man City,Etihad_Stadium.json,Manchester
+MID,Middlesbrough,Middlesbrough,,Middlesbrough,641.0,Middlesbrough FC,8549.0,Middlesbrough,,Middlesbrough,,Newcastle
+MUN,Manchester United,Man United,Manchester United,Manchester United,985.0,Manchester United,10260.0,Manchester United,MUN,Man Utd,Old_Trafford.json,Manchester
+NEW,Newcastle,Newcastle,Newcastle United,Newcastle United,762.0,Newcastle United,10261.0,Newcastle|Newcastle United,NEW,Newcastle,St_James_Park.json,Newcastle
+NFO,Nottingham Forest,Nott'm Forest,Nottingham Forest,Nottingham Forest,703.0,Nottingham Forest,10203.0,Nottingham Forest,NFO,Nott'm Forest,The_City_Ground.json,Leicester_Midlands
+NOR,Norwich,Norwich,Norwich City,Norwich,1123.0,Norwich City,9850.0,Norwich|Norwich City,NOR,Norwich,Carrow_Road.json,London
+POR,Portsmouth,Portsmouth,,,,Portsmouth FC,,,,,,Southampton_South
+QPR,QPR,QPR,,Queens Park Rangers,1039.0,Queens Park Rangers,10172.0,Queens Park Rangers,,,,London
+REA,Reading,Reading,,,1032.0,Reading FC,9798.0,Reading,,,,London
+SHU,Sheffield United,Sheffield United,Sheffield United,Sheffield United,350.0,Sheffield United,8657.0,Sheffield United,SHU,Sheffield Utd,Bramall_Lane.json,Leeds_Yorkshire
+SOU,Southampton,Southampton,Southampton,Southampton,180.0,Southampton FC,8466.0,Southampton,SOU,Southampton,St_Marys_Stadium.json,Southampton_South
+STK,Stoke,Stoke,Stoke City,Stoke,512.0,Stoke City,10194.0,Stoke|Stoke City,,Stoke,,Leicester_Midlands
+SUN,Sunderland,Sunderland,Sunderland,Sunderland,289.0,Sunderland AFC,8472.0,Sunderland,SUN,Sunderland,Stadium_of_Light.json,Newcastle
+SWA,Swansea,Swansea,Swansea City,Swansea,2288.0,Swansea City,10003.0,Swansea|Swansea City,,Swansea,,Wales_Swansea_Cardiff
+TOT,Tottenham,Tottenham,Tottenham Hotspur,Tottenham,148.0,Tottenham Hotspur,8586.0,Tottenham|Tottenham Hotspur,TOT,Spurs|Tottenham,Tottenham_Hotspur_Stadium.json,London
+WAT,Watford,Watford,Watford,Watford,1010.0,Watford FC,9817.0,Watford,WAT,Watford,Vicarage_Road.json,London
+WBA,West Brom,West Brom,West Bromwich Albion,West Bromwich Albion,984.0,West Bromwich Albion,8659.0,West Bromwich|West Bromwich Albion,,West Brom,,Birmingham
+WHU,West Ham,West Ham,West Ham United,West Ham,379.0,West Ham United,8654.0,West Ham|West Ham United,WHU,West Ham,London_Stadium.json,London
+WIG,Wigan,Wigan,,,1071.0,Wigan Athletic,8528.0,Wigan Athletic,,,,Manchester
+WOL,Wolves,Wolves,Wolverhampton Wanderers,Wolverhampton Wanderers,543.0,Wolverhampton Wanderers,8602.0,Wolverhampton|Wolverhampton Wanderers,WOL,Wolves,Molineux_Stadium.json,Birmingham

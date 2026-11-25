@@ -1,0 +1,17 @@
+{
+  "k": 41.369,
+  "hfa": 140.0,
+  "shrink": 0.143,
+  "promo_init": 1460.0,
+  "w_xg": 0.45,
+  "w_elo": 0.6,
+  "glm_kw": {
+    "prior_scale": 0.35,
+    "half_life_days": 360.0,
+    "w_goals": 0.35,
+    "hfa_prior": 0.22,
+    "hfa_prior_std": 0.14,
+    "elo_priors": null,
+    "promo_offset": 0.0
+  }
+}

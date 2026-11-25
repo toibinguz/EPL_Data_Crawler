@@ -151,6 +151,7 @@ def update_understat(api: HfApi = None, year="2026", season_tag="2026_2027"):
 
     overview_file = SEASON_NEW_DIR / f"understat_raw_{season_tag}.json"
     matches_to_fetch = []
+    overview_ok = False
 
     try:
         # Step A: Query existing matches on Hugging Face and local disk
@@ -165,7 +166,11 @@ def update_understat(api: HfApi = None, year="2026", season_tag="2026_2027"):
             raw = resp.read()
             if raw[:2] == b"\x1f\x8b":
                 raw = gzip.decompress(raw)
-            data = json.loads(raw.decode("utf-8"))
+            txt = raw.decode("utf-8", errors="replace").strip()
+            if not txt.startswith("{"):
+                raise ValueError("Understat returned empty or non-JSON response (blocked/changed upstream)")
+            data = json.loads(txt)
+            overview_ok = True
             with open(overview_file, "w", encoding="utf-8") as f:
                 json.dump(data, f)
             log(f"[+] Successfully updated {overview_file.name}")
@@ -181,9 +186,11 @@ def update_understat(api: HfApi = None, year="2026", season_tag="2026_2027"):
                     if m_id not in already_saved_ids:
                         matches_to_fetch.append(m_id)
     except Exception as e:
-        log(f"[!] Error fetching Understat league overview: {e}")
+        log(f"[!] Understat overview skipped ({e}). Keeping existing archived matches.")
 
     # Step D: Fetch only the new delta matches
+    if not overview_ok:
+        return
     if matches_to_fetch:
         log(f"[*] Found {len(matches_to_fetch)} NEW completed Understat matches to crawl: {matches_to_fetch}")
         for m_id in matches_to_fetch:
@@ -277,20 +284,125 @@ def update_fotmob(api: HfApi = None, season_tag="2026_2027"):
         log("[+] All completed FotMob matches are already archived on Hugging Face (delta = 0).")
 
 
-def update_open_meteo():
-    """Verify weather cache for 2026/27."""
+EPL2627_STADIUM_COORDS = {
+    "Arsenal": (51.55, -0.11),
+    "Aston Villa": (52.51, -1.88),
+    "Bournemouth": (50.74, -1.84),
+    "Brentford": (51.49, -0.29),
+    "Brighton": (50.86, -0.08),
+    "Chelsea": (51.48, -0.19),
+    "Coventry": (52.45, -1.50),
+    "Crystal Palace": (51.40, -0.09),
+    "Everton": (53.44, -2.97),
+    "Fulham": (51.47, -0.22),
+    "Hull": (53.75, -0.37),
+    "Ipswich": (52.06, 1.14),
+    "Leeds": (53.78, -1.57),
+    "Liverpool": (53.43, -2.96),
+    "Man City": (53.48, -2.20),
+    "Man United": (53.46, -2.29),
+    "Newcastle": (54.98, -1.62),
+    "Nott'm Forest": (52.94, -1.13),
+    "Sunderland": (54.91, -1.39),
+    "Tottenham": (51.60, -0.07),
+}
+
+
+def update_open_meteo(season_code="2627", season_tag="2026_2027"):
+    """Fetch missing hourly match weather from Open-Meteo Archive (with forecast past_days fallback)."""
+    import csv
+
     log("=" * 70)
-    log("[5/5] Checking Weather Cache...")
-    w_target = SEASON_NEW_DIR / "weather_cache_2026_2027.json"
-    if not w_target.exists():
-        w_src = RAW_DIR / "open_meteo" / "weather_cache_2026_2027.json"
-        if w_src.exists():
-            shutil.copy2(w_src, w_target)
-            log(f"[+] Weather cache initialized: {w_target.name}")
-        else:
-            log("[*] Weather cache already up to date.")
-    else:
-        log("[+] Weather cache present.")
+    log("[5/5] Updating Open-Meteo Weather Cache (Incremental)...")
+    w_target = SEASON_NEW_DIR / f"weather_cache_{season_tag}.json"
+    fd_file = SEASON_NEW_DIR / f"football_data_raw_{season_code}.csv"
+
+    cache = {}
+    if w_target.exists():
+        try:
+            cache = json.loads(w_target.read_text(encoding="utf-8"))
+        except Exception:
+            cache = {}
+
+    if not fd_file.exists():
+        log(f"[!] Missing {fd_file.name}, skipping weather update.")
+        return
+
+    needed_by_coord = {}
+    with open(fd_file, "r", encoding="utf-8-sig", newline="") as f:
+        for r in csv.DictReader(f):
+            ht = (r.get("HomeTeam") or "").strip()
+            dt_raw = (r.get("Date") or "").strip()
+            tm_raw = (r.get("Time") or "15:00").strip()
+            coords = EPL2627_STADIUM_COORDS.get(ht)
+            if not coords or not dt_raw:
+                continue
+            try:
+                dt_iso = datetime.datetime.strptime(dt_raw, "%d/%m/%Y").strftime("%Y-%m-%d")
+            except ValueError:
+                try:
+                    dt_iso = datetime.datetime.strptime(dt_raw, "%Y-%m-%d").strftime("%Y-%m-%d")
+                except ValueError:
+                    continue
+            hour = int(tm_raw.split(":")[0]) if ":" in tm_raw else 15
+            lat, lon = coords
+            wkey = f"{lat:.2f}_{lon:.2f}_{dt_iso}_{hour:02d}"
+            if wkey not in cache:
+                needed_by_coord.setdefault((lat, lon), []).append((wkey, dt_iso, hour))
+
+    total_missing = sum(len(v) for v in needed_by_coord.values())
+    if total_missing == 0:
+        log(f"[+] Weather cache already up to date ({len(cache)} entries).")
+        return
+
+    log(f"[*] Fetching weather for {total_missing} new matches across {len(needed_by_coord)} stadiums...")
+    added = 0
+    for (lat, lon), items in needed_by_coord.items():
+        d_min = min(x[1] for x in items)
+        d_max = max(x[1] for x in items)
+        hourly_lookup = {}
+
+        # Query Archive first, then Forecast past_days=10 for very recent matches
+        urls = [
+            f"https://archive-api.open-meteo.com/v1/archive?latitude={lat:.2f}&longitude={lon:.2f}&start_date={d_min}&end_date={d_max}&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,weather_code&timezone=Europe%2FLondon",
+            f"https://api.open-meteo.com/v1/forecast?latitude={lat:.2f}&longitude={lon:.2f}&past_days=10&forecast_days=1&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,weather_code&timezone=Europe%2FLondon",
+        ]
+        for api_url in urls:
+            try:
+                req = urllib.request.Request(api_url, headers=HEADERS)
+                with urllib.request.urlopen(req, timeout=15) as resp:
+                    payload = json.loads(resp.read().decode("utf-8"))
+                hr = payload.get("hourly") or {}
+                times = hr.get("time") or []
+                for idx_t, ts in enumerate(times):
+                    t_v = hr["temperature_2m"][idx_t]
+                    h_v = hr["relative_humidity_2m"][idx_t]
+                    p_v = hr["precipitation"][idx_t]
+                    w_v = hr["wind_speed_10m"][idx_t]
+                    c_v = hr["weather_code"][idx_t]
+                    if t_v is not None:
+                        hourly_lookup[ts] = {
+                            "temp": t_v,
+                            "humidity": h_v,
+                            "precipitation": p_v,
+                            "wind": w_v,
+                            "weather_code": c_v,
+                        }
+            except Exception as e:
+                log(f"    [!] Open-Meteo query warning ({lat:.2f},{lon:.2f}): {e}")
+            time.sleep(0.1)
+
+        for wkey, dt_iso, hour in items:
+            ts_key = f"{dt_iso}T{hour:02d}:00"
+            if ts_key in hourly_lookup:
+                cache[wkey] = hourly_lookup[ts_key]
+                added += 1
+
+    w_target.write_text(json.dumps(cache), encoding="utf-8")
+    raw_dest = RAW_DIR / "open_meteo" / f"weather_cache_{season_tag}.json"
+    if RAW_DIR.exists() and raw_dest.parent.exists():
+        shutil.copy2(w_target, raw_dest)
+    log(f"[+] Updated weather_cache_{season_tag}.json: +{added} new entries (total={len(cache)}).")
 
 
 def sync_season_to_hf(api: HfApi):

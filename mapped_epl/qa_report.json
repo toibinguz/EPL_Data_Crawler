@@ -1,0 +1,63 @@
+{
+  "total_checks": 14,
+  "passed": 14,
+  "failed": [],
+  "details": {
+    "clean_matches: match_id unique": {
+      "passed": true,
+      "detail": "9936 rows"
+    },
+    "clean_matches: (season, home, away) unique": {
+      "passed": true,
+      "detail": ""
+    },
+    "clean_matches: home != away": {
+      "passed": true,
+      "detail": ""
+    },
+    "clean_matches: all 26 completed seasons (2000/01-2025/26) have 380 matches": {
+      "passed": true,
+      "detail": "min=380"
+    },
+    "clean_matches: result matches goals": {
+      "passed": true,
+      "detail": ""
+    },
+    "clean_match_odds: all odds > 1": {
+      "passed": true,
+      "detail": ""
+    },
+    "clean_match_odds: implied prob sum ~ 1.0": {
+      "passed": true,
+      "detail": "min=1.0000, max=1.0000"
+    },
+    "clean_match_team_stats: 100% club_id": {
+      "passed": true,
+      "detail": "19872 rows"
+    },
+    "clean_match_team_stats: shots_on_target <= shots": {
+      "passed": true,
+      "detail": ""
+    },
+    "clean_player_match_stats: 100% match_id & club_id & player_key": {
+      "passed": true,
+      "detail": "314111 rows"
+    },
+    "clean_player_match_stats: 0 players on >1 club in same match": {
+      "passed": true,
+      "detail": ""
+    },
+    "clean_shots: minute in [0, 120]": {
+      "passed": true,
+      "detail": "min=0, max=105"
+    },
+    "clean_shots: xg in [0, 1.5]": {
+      "passed": true,
+      "detail": "max=1.0000"
+    },
+    "clean_match_events: minute in [0, 130]": {
+      "passed": true,
+      "detail": ""
+    }
+  }
+}

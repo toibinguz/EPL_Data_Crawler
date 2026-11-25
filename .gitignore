@@ -51,3 +51,10 @@ Thumbs.db
 
 # Antigravity agent files
 .system_generated/
+
+# Large local SQLite DBs & browser/scraped match artifacts
+*.db
+*.sqlite
+*.sqlite3
+mapped_epl/whoscored_2627/
+mapped_epl/downloaded_matches/
